@@ -1,59 +1,22 @@
-spring:
-  # H2 인메모리 DB (MySQL 전환 시 아래 주석 해제)
-  datasource:
-    url: jdbc:h2:mem:petdb;MODE=MySQL
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+# ============================================================
+# 개발 환경 설정 (local)
+# 실행: -Dspring.profiles.active=dev
+# ============================================================
 
-  # JPA
+spring:
+  # ── DataSource (PostgreSQL 로컬) ──────────────────────────
+  datasource:
+    url: jdbc:postgresql://localhost:5432/petdb
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:postgres}   # 환경변수 없으면 postgres 사용
+    password: ${DB_PASSWORD:}           # 환경변수 없으면 빈 값
+
+  # ── JPA / Hibernate ──────────────────────────────────────
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update    # 앱 시작 시 스키마 변경사항만 반영 (데이터 유지)
     properties:
       hibernate:
-        format_sql: true
-        show_sql: true
-
-  # OAuth2 (실제 값으로 교체)
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${GOOGLE_CLIENT_ID:your-google-client-id}
-            client-secret: ${GOOGLE_CLIENT_SECRET:your-google-client-secret}
-            scope: email, profile
-          kakao:
-            client-id: ${KAKAO_CLIENT_ID:your-kakao-client-id}
-            client-secret: ${KAKAO_CLIENT_SECRET:your-kakao-client-secret}
-            client-authentication-method: client_secret_post
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            scope: profile_nickname, account_email
-        provider:
-          kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token-uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id
-
-# JWT
-jwt:
-  secret: ${JWT_SECRET:petServiceSecretKeyMustBeAtLeast256BitsLongForHS256Algorithm}
-  access-token-expiration: 1800000    # 30분
-  refresh-token-expiration: 604800000  # 7일
-
-# Swagger
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-  api-docs:
-    path: /api-docs
-
-server:
-  port: 8080
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true  # 로그에 SQL 들여쓰기
+        show_sql: true    # 실행 SQL 콘솔 출력
