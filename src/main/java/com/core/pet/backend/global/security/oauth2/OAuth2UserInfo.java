@@ -18,6 +18,7 @@ public abstract class OAuth2UserInfo {
         return switch (registrationId.toLowerCase()) {
             case "google" -> new GoogleUserInfo(attributes);
             case "kakao" -> new KakaoUserInfo(attributes);
+            case "apple" -> new AppleUserInfo(attributes);
             default -> throw new IllegalArgumentException("지원하지 않는 OAuth2 Provider: " + registrationId);
         };
     }

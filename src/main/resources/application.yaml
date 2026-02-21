@@ -42,6 +42,13 @@ spring:
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: profile_nickname, account_email
+          apple:
+            client-id: ${APPLE_CLIENT_ID}               # Apple Developer - Services ID (Bundle ID)
+            client-secret: ${APPLE_CLIENT_SECRET}       # ES256 JWT로 직접 생성한 client_secret
+            client-authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: name, email
         provider:
           # 카카오는 Spring 기본 provider가 없으므로 직접 지정
           kakao:
@@ -49,6 +56,12 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id  # 카카오 응답에서 사용자 식별 키
+          # 애플은 Spring 기본 provider가 없으므로 직접 지정 (OIDC)
+          apple:
+            authorization-uri: https://appleid.apple.com/auth/authorize?response_mode=form_post
+            token-uri: https://appleid.apple.com/auth/token
+            jwk-set-uri: https://appleid.apple.com/auth/keys
+            user-name-attribute: sub  # Apple ID Token의 subject
 
 # ── JWT ──────────────────────────────────────────────────
 jwt:
