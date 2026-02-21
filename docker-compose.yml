@@ -1,0 +1,25 @@
+#  docker-compose up -d
+version: '3.8'
+
+services:
+  pet_postgres:
+    # pgvector가 사전 설치된 안정적인 이미지 (PostgreSQL 16 기반)
+    image: pgvector/pgvector:pg16
+    container_name: pet_postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: pet_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # 로컬의 ./pgdata 폴더와 컨테이너 내부 데이터 폴더 연결 (데이터 유실 방지)
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - parking-network
+
+#  bridge	컨테이너 간 사설망 구축	대부분의 일반적인 프로젝트 (표준)
+networks:
+  parking-network:
+    driver: bridge

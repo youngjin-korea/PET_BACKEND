@@ -22,6 +22,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final MemberRepository memberRepository;
 
+    /**
+     * 소셜 서버에서 사용자 정보를 받은 후 회원가입, 로그인 처리
+     * @param userRequest the user request
+     * @return
+     * @throws OAuth2AuthenticationException
+     */
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -34,6 +40,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         OAuth2UserInfo userInfo = OAuth2UserInfo.of(registrationId, attributes);
 
+        // 기존 없던 고객 -> 회원가입, 존재하던 고객 -> name 속성 업데이트
         Member member = saveOrUpdate(userInfo, registrationId);
 
         return new DefaultOAuth2User(

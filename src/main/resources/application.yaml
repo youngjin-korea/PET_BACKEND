@@ -52,7 +52,7 @@ spring:
 
 # ── JWT ──────────────────────────────────────────────────
 jwt:
-  secret: ${JWT_SECRET}                    # 256bit 이상 랜덤 문자열 권장
+  secret: ${JWT_SECRET:97rladudwlsdudwlsrla08rla14dlftoddlfqllafanjgkwl} # 256bit 이상 랜덤 문자열 권장
   access-token-expiration: 1800000         # 30분 (ms)
   refresh-token-expiration: 604800000      # 7일 (ms)
 

@@ -6,10 +6,10 @@
 spring:
   # ── DataSource (PostgreSQL 로컬) ──────────────────────────
   datasource:
-    url: jdbc:postgresql://localhost:5432/petdb
+    url: jdbc:postgresql://localhost:5432/pet_db
     driver-class-name: org.postgresql.Driver
-    username: ${DB_USERNAME:postgres}   # 환경변수 없으면 postgres 사용
-    password: ${DB_PASSWORD:}           # 환경변수 없으면 빈 값
+    username: ${DB_USERNAME:user}   # 환경변수 없으면 postgres 사용
+    password: ${DB_PASSWORD:1234}           # 환경변수 없으면 빈 값
 
   # ── JPA / Hibernate ──────────────────────────────────────
   jpa:
