@@ -31,10 +31,10 @@ public class SecurityConfig {
             "/api/auth/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
-            "/api-docs/**",
-            "/h2-console/**"
+            "/api-docs/**"
     };
 
+    // TODO:: 실패 핸들러 추가
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -54,6 +54,7 @@ public class SecurityConfig {
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }

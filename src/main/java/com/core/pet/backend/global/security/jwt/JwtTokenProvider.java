@@ -96,6 +96,23 @@ public class JwtTokenProvider {
         }
     }
 
+    // Refresh Token에서 이메일(subject) 추출
+    public String getEmailFromRefreshToken(String refreshToken) {
+        try {
+            return Jwts.parser().verifyWith(key).build()
+                    .parseSignedClaims(refreshToken).getPayload().getSubject();
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+    }
+
+    // Refresh Token 만료 시간(ms) 반환
+    public long getRefreshTokenExpiration() {
+        return refreshTokenExpiration;
+    }
+
     private Claims parseClaims(String accessToken) {
         try {
             return Jwts.parser().verifyWith(key).build()

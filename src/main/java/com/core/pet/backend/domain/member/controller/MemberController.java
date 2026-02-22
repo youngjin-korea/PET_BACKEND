@@ -36,6 +36,22 @@ public class MemberController {
         return ResponseEntity.ok(ApiResponse.ok(memberService.login(request)));
     }
 
+    /**
+     * 1. Access Token 만료 시 (401 EXPIRED_TOKEN 응답)
+     * 2. POST /api/auth/refresh
+     *    Header: Refresh-Token: {refreshToken}
+     * 3. 응답으로 새 accessToken + refreshToken 받아서 저장
+     * 4. 원래 요청 재시도
+     * @param refreshToken
+     * @return
+     */
+    @Operation(summary = "토큰 재발급", description = "Refresh Token으로 Access Token과 Refresh Token을 재발급합니다.")
+    @PostMapping("/api/auth/refresh")
+    public ResponseEntity<ApiResponse<MemberResponseDto.TokenInfo>> refresh(
+            @RequestHeader("Refresh-Token") String refreshToken) {
+        return ResponseEntity.ok(ApiResponse.ok("토큰이 재발급되었습니다.", memberService.reissue(refreshToken)));
+    }
+
     @Operation(summary = "내 정보 조회")
     @GetMapping("/api/members/me")
     public ResponseEntity<ApiResponse<MemberResponseDto.Info>> getMyInfo(
